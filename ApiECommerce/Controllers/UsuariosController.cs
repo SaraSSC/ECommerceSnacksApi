@@ -70,10 +70,10 @@ namespace ApiECommerce.Controllers
 
             return new ObjectResult(new
             {
-                access_token = jwt,
-                token_type = "bearer",
-                user_id = usuarioAtual.Id,
-                user_name = usuarioAtual.Nome
+                accesstoken = jwt,
+                tokentype = "bearer",
+                usuarioid = usuarioAtual.Id,
+                usuarionome = usuarioAtual.Nome
             });
         }
 
