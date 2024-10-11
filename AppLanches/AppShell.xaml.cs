@@ -1,16 +1,17 @@
 ﻿using AppLanches.Services;
+using AppLanches.Validations;
 
 namespace AppLanches
 {
     public partial class AppShell : Shell
     {
         private readonly ApiService _apiService;
-        //private readonly IValidator _validator;
-        public AppShell(ApiService apiService /*,IValidator validator*/)
+        private readonly IValidator _validator;
+        public AppShell(ApiService apiService ,IValidator validator)
         {
             InitializeComponent();
             _apiService = apiService;
-            //_validator = validator;
+            _validator = validator;
 
         }
     }

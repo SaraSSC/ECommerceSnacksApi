@@ -1,54 +1,63 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="AppLanches.Pages.LoginPage"
-             Title="Login"
-			 NavigationPage.HasNavigationBar="False">
+<ContentPage
+	x:Class="AppLanches.Pages.LoginPage"
+	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	Title="Login"
+	NavigationPage.HasNavigationBar="False">
 
-	<Grid RowDefinitions="Auto,Auto,Auto,Auto,*"
-      RowSpacing="20"
-      Margin="20,150,20,40">
+	<Grid
+		Margin="20,150,20,40"
+		RowDefinitions="Auto,Auto,Auto,Auto,*"
+		RowSpacing="20">
 
-		<Image Grid.Row="0"
-           Source="street_food.png"
-           Aspect="AspectFit"
-           HeightRequest="100"
-           WidthRequest="100" />
-		<Label Grid.Row="1"
-           Text="Login"
-           FontAttributes="Bold"
-           HorizontalOptions="Center" />
+		<Image
+			Grid.Row="0"
+			Aspect="AspectFit"
+			HeightRequest="100"
+			Source="street_food.png"
+			WidthRequest="100" />
+		<Label
+			Grid.Row="1"
+			FontAttributes="Bold"
+			HorizontalOptions="Center"
+			Text="Login" />
 
-		<Frame Grid.Row="2"
-           Padding="15"
-           BackgroundColor="White">
+		<Frame
+			Grid.Row="2"
+			Padding="15"
+			BackgroundColor="White">
 
 			<VerticalStackLayout>
 
-				<Entry Placeholder="Email"
-                   x:Name="EntEmail" />
+				<Entry x:Name="EntEmail" Placeholder="Email" />
 
-				<Entry Placeholder="Password"
-                   IsPassword="True"
-                   x:Name="EntPassword" />
+				<Entry
+					x:Name="EntPassword"
+					IsPassword="True"
+					Placeholder="Password" />
 			</VerticalStackLayout>
 		</Frame>
 
-		<Button Grid.Row="3"
-            Text="Login"
-            FontSize="Medium"
-            x:Name="BtnSignIn" 
-            BackgroundColor="#a90409"
-            Clicked="BtnSignIn_Clicked"/>
-		<HorizontalStackLayout Grid.Row="4"
-                           Spacing="2"
-                           HorizontalOptions="Center"
-                           VerticalOptions="EndAndExpand">
+		<Button
+			x:Name="BtnSignIn"
+			Grid.Row="3"
+			BackgroundColor="#a90409"
+			Clicked="BtnSignIn_Clicked"
+			FontSize="Medium"
+			Text="Login" />
+		<HorizontalStackLayout
+			Grid.Row="4"
+			HorizontalOptions="Center"
+			Spacing="2"
+			VerticalOptions="EndAndExpand">
 			<Label Text="Not one of us? " />
-			<Label Text="Register now" TextColor="#a90409" FontAttributes="Bold">
+			<Label
+				FontAttributes="Bold"
+				Text="Register now"
+				TextColor="#a90409">
 				<Label.GestureRecognizers>
-					<TapGestureRecognizer x:Name="TapRegister"
-                                      Tapped="TapRegister_Tapped"/>
+					<TapGestureRecognizer x:Name="TapRegister" Tapped="TapRegister_Tapped" />
 				</Label.GestureRecognizers>
 			</Label>
 		</HorizontalStackLayout>

@@ -1,5 +1,9 @@
-﻿using AppLanches.Services;
+﻿
+using AppLanches.Services;
+using AppLanches.Validations;
 using Microsoft.Extensions.Logging;
+using System.ComponentModel.DataAnnotations;
+using Validator = AppLanches.Validations.Validator;
 
 namespace AppLanches
 {
@@ -22,6 +26,7 @@ namespace AppLanches
 #endif
             builder.Services.AddHttpClient();
             builder.Services.AddSingleton<ApiService>();
+            builder.Services.AddSingleton<IValidator, Validator>();
             return builder.Build();
         }
     }

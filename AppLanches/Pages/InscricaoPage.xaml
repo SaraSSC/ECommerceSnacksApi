@@ -1,58 +1,71 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="AppLanches.Pages.InscricaoPage"
-			 NavigationPage.HasNavigationBar="False">
+<ContentPage
+	x:Class="AppLanches.Pages.InscricaoPage"
+	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	NavigationPage.HasNavigationBar="False">
 
-	<Grid RowDefinitions="Auto,Auto,Auto,Auto,*"
-      RowSpacing="20"
-      Margin="20,150,20,40">
+	<Grid
+		Margin="20,150,20,40"
+		RowDefinitions="Auto,Auto,Auto,Auto,*"
+		RowSpacing="20">
 
-		<Image Grid.Row="0"
-           Source="street_food.png"
-           Aspect="AspectFit"
-           HeightRequest="100"
-           WidthRequest="100" />
-		<Label Grid.Row="1"
-           Text="Hey there! Come join us :P"
-           FontAttributes="Bold"
-           HorizontalOptions="Center" />
+		<Image
+			Grid.Row="0"
+			Aspect="AspectFit"
+			HeightRequest="100"
+			Source="street_food.png"
+			WidthRequest="100" />
+		<Label
+			Grid.Row="1"
+			FontAttributes="Bold"
+			HorizontalOptions="Center"
+			Text="Hey there! Come join us :P" />
 
-		<Frame Grid.Row="2"
-           Padding="15"
-           BackgroundColor="White">
+		<Frame
+			Grid.Row="2"
+			Padding="15"
+			BackgroundColor="White">
 			<VerticalStackLayout>
-				<Entry Placeholder="Name"
-                   x:Name="EntNome" />
+				<Entry x:Name="EntNome" Placeholder="Name" />
 
-				<Entry Placeholder="Email"
-                   Keyboard="Email"
-                   x:Name="EntEmail" />
+				<Entry
+					x:Name="EntEmail"
+					Keyboard="Email"
+					Placeholder="Email" />
 
-				<Entry Placeholder="Phone"
-                   Keyboard="Telephone"
-                   x:Name="EntPhone" />
+				<Entry
+					x:Name="EntPhone"
+					Keyboard="Telephone"
+					Placeholder="Phone" />
 
-				<Entry Placeholder="Password"
-                   IsPassword="True"
-                   x:Name="EntPassword" />
+				<Entry
+					x:Name="EntPassword"
+					IsPassword="True"
+					Placeholder="Password" />
 			</VerticalStackLayout>
 		</Frame>
 
-		<Button Grid.Row="3"
-            Text="Register new account"
-            FontSize="Medium"
-            BackgroundColor="#a90409"
-            x:Name="BtnSignup" 
-            Clicked="BtnSignup_Clicked"/>
+		<Button
+			x:Name="BtnSignup"
+			Grid.Row="3"
+			BackgroundColor="#a90409"
+			Clicked="BtnSignup_Clicked"
+			FontSize="Medium"
+			Text="Register new account" />
 
-		<HorizontalStackLayout Grid.Row="4"
-                           Spacing="2" HorizontalOptions="Center"                      
-                           VerticalOptions="EndAndExpand">
+		<HorizontalStackLayout
+			Grid.Row="4"
+			HorizontalOptions="Center"
+			Spacing="2"
+			VerticalOptions="EndAndExpand">
 			<Label Text="Already one of us?" />
-			<Label Text=" Login" TextColor="#a90409" FontAttributes="Bold">
+			<Label
+				FontAttributes="Bold"
+				Text=" Login"
+				TextColor="#a90409">
 				<Label.GestureRecognizers>
-					<TapGestureRecognizer x:Name="TapLogin" Tapped="TapLogin_Tapped"/>
+					<TapGestureRecognizer x:Name="TapLogin" Tapped="TapLogin_Tapped" />
 				</Label.GestureRecognizers>
 			</Label>
 		</HorizontalStackLayout>

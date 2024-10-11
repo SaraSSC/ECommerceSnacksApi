@@ -38,6 +38,7 @@ namespace ApiECommerce.Controllers
             dbContext.Usuarios.Add(usuario);
             await dbContext.SaveChangesAsync();
             return StatusCode(StatusCodes.Status201Created);
+          
         }
 
         [HttpPost("[action]")]
@@ -81,8 +82,8 @@ namespace ApiECommerce.Controllers
         [HttpPost("uploadfoto")]
         public async Task<IActionResult> UploadFotoUsuario(IFormFile imagem)
         {
-            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-            var usuario = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.Email == userEmail);
+            var usuarioemail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var usuario = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.Email == usuarioemail);
 
             if (usuario is null)
             {

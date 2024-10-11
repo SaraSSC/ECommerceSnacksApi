@@ -1,7 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Headers;
 using System.Net;
 using System.Text;
@@ -18,8 +15,7 @@ namespace AppLanches.Services
         private readonly string _baseUrl = "https://dzzqk7t1-5113.uks1.devtunnels.ms/";
 
         JsonSerializerOptions _serializerOptions;
-        public ApiService(HttpClient httpClient,
-            ILogger<ApiService> logger)
+        public ApiService(HttpClient httpClient, ILogger<ApiService> logger)
         {
             _httpClient = httpClient;
             _logger = logger;
@@ -29,29 +25,30 @@ namespace AppLanches.Services
             };
         }
 
-        public async Task<ApiResponse<bool>> UserRegister(string name, string email, string phone, string password)
+        public async Task<ApiResponse<bool>> UserRegister(string nome, string email, string telefone, string senha)
         {
             try
             {
                 var register = new Register()
                 {
-                    Nome = name,
+                    Nome = nome,
                     Email = email,
-                    Telefone = phone,
-                    Senha = password
+                    Telefone = telefone,
+                    Senha = senha
                 };
 
                 var json = JsonSerializer.Serialize(register, _serializerOptions);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var response = await PostRequest("api/Users/Register", content);
+                var response = await PostRequest("api/Usuarios/Register", content);
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    _logger.LogError($"Erro ao enviar requisição HTTP: {response.StatusCode}");
+                    var error = await response.Content.ReadAsStringAsync();
+                    _logger.LogError($"Erro ao enviar requisição HTTP: {response.StatusCode} - {error}");
                     return new ApiResponse<bool>
                     {
-                        ErrorMessage = $"Erro ao enviar requisição HTTP: {response.StatusCode}"
+                        ErrorMessage = ($"Erro ao enviar requisição HTTP: {response.StatusCode} - {error}")
                     };
                 }
 
@@ -62,37 +59,50 @@ namespace AppLanches.Services
                 _logger.LogError($"Erro ao registar o user: {ex.Message}");
                 return new ApiResponse<bool> { ErrorMessage = ex.Message };
             }
-
         }
 
-        public async Task<ApiResponse<bool>> Login(string email, string password)
+        public async Task<ApiResponse<bool>> Login(string email, string senha)
         {
             try
             {
                 var login = new Login()
                 {
                     Email = email,
-                    Senha = password
+                    Senha = senha
                 };
 
                 var json = JsonSerializer.Serialize(login, _serializerOptions);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var response = await PostRequest("api/Users/Login", content);
+                var response = await PostRequest("api/Usuarios/Login", content);
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    _logger.LogError($"Erro ao enviar requisição HTTP: {response.StatusCode}");
+                    var error = await response.Content.ReadAsStringAsync();
+                    _logger.LogError($"Erro ao enviar requisição HTTP: {response.StatusCode} - {error}");
                     return new ApiResponse<bool>
                     {
-                        ErrorMessage = $"Erro ao enviar requisição HTTP: {response.StatusCode}"
+                        ErrorMessage = ($"Erro ao enviar requisição HTTP: {response.StatusCode} - {error}")
                     };
                 }
 
                 var jsonResult = await response.Content.ReadAsStringAsync();
+
+                if (string.IsNullOrWhiteSpace(jsonResult))
+                {
+                    _logger.LogError("The response content is empty.");
+                    return new ApiResponse<bool> { ErrorMessage = "The response content is empty." };
+                }
+
                 var result = JsonSerializer.Deserialize<Token>(jsonResult, _serializerOptions);
 
-                Preferences.Set("accesstoken", result!.AccessToken);
+                if (result == null)
+                {
+                    _logger.LogError("Failed to deserialize the token.");
+                    return new ApiResponse<bool> { ErrorMessage = "Failed to deserialize the token." };
+                }
+
+                Preferences.Set("accesstoken", result.AccessToken);
                 Preferences.Set("usuarioid", (int)result.UsuarioId!);
                 Preferences.Set("usuarionome", result.UsuarioNome);
 
@@ -100,11 +110,10 @@ namespace AppLanches.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Failed to login {ex.Message}");
+                _logger.LogError($"Erro ao registar o user: {ex.Message}");
                 return new ApiResponse<bool> { ErrorMessage = ex.Message };
             }
         }
-
 
         public async Task<HttpResponseMessage> PostRequest(string uri, HttpContent content)
         {
@@ -119,67 +128,7 @@ namespace AppLanches.Services
                 _logger.LogError($"Erro ao enviar requisição POST para {uri}: {ex.Message}");
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
-
         }
-
-        //public async Task<(List<Category>? Categorias, string? ErrorMessage)> GetCategories()
-        //{
-        //    return await GetAsync<List<Category>>("api/categories");
-        //}
-
-        //public async Task<(List<Product>? Produtos, string? ErrorMessage)> GetProducts(string typeProduct, string categoryId)
-        //{
-        //    string endpoint = $"api/Products?typeProduct={typeProduct}&categoryId={categoryId}";
-        //    return await GetAsync<List<Product>>(endpoint);
-        //}
-
-        //private async Task<(T? Data, string? ErrorMessage)> GetAsync<T>(string endpoint)
-        //{
-        //    try
-        //    {
-        //        AddAuthorizationHeader();
-
-        //        var response = await _httpClient.GetAsync(AppConfig.BaseUrl + endpoint);
-
-        //        if (response.IsSuccessStatusCode)
-        //        {
-        //            var responseString = await response.Content.ReadAsStringAsync();
-        //            var data = JsonSerializer.Deserialize<T>(responseString, _serializerOptions);
-        //            return (data ?? Activator.CreateInstance<T>(), null);
-        //        }
-        //        else
-        //        {
-        //            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-        //            {
-        //                string errorMessage = "Unauthorized";
-        //                _logger.LogWarning(errorMessage);
-        //                return (default, errorMessage);
-        //            }
-
-        //            string generalErrorMessage = $"Erro na requisição: {response.ReasonPhrase}";
-        //            _logger.LogError(generalErrorMessage);
-        //            return (default, generalErrorMessage);
-        //        }
-        //    }
-        //    catch (HttpRequestException ex)
-        //    {
-        //        string errorMessage = $"Erro de requisição HTTP: {ex.Message}";
-        //        _logger.LogError(ex, errorMessage);
-        //        return (default, errorMessage);
-        //    }
-        //    catch (JsonException ex)
-        //    {
-        //        string errorMessage = $"Erro de desserialização JSON: {ex.Message}";
-        //        _logger.LogError(ex, errorMessage);
-        //        return (default, errorMessage);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        string errorMessage = $"Erro inesperado: {ex.Message}";
-        //        _logger.LogError(ex, errorMessage);
-        //        return (default, errorMessage);
-        //    }
-        //}
 
         private void AddAuthorizationHeader()
         {
@@ -189,7 +138,5 @@ namespace AppLanches.Services
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
         }
-
     }
 }
-
