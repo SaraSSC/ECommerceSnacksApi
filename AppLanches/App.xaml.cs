@@ -13,8 +13,21 @@ namespace AppLanches
             InitializeComponent();
             _apiService = apiService;
             _validator = validator;
-            MainPage = new NavigationPage(new InscricaoPage(_apiService, _validator));
-            
+            //MainPage = new NavigationPage(new InscricaoPage(_apiService, _validator));
+            SetMainPage();
         }
+
+        private void SetMainPage()
+        {
+            var acessToken = Preferences.Get("accesstoken", string.Empty);
+
+            if (string.IsNullOrEmpty(acessToken))
+            {
+                MainPage = new NavigationPage(new LoginPage(_apiService, _validator));
+            }
+
+            MainPage = new AppShell(_apiService, _validator);
+        }
+            
     }
 }

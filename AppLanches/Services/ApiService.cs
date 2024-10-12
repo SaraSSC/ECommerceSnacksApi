@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using AppLanches.Models;
 
+
 namespace AppLanches.Services
 {
     public class ApiService
@@ -45,10 +46,10 @@ namespace AppLanches.Services
                 if (!response.IsSuccessStatusCode)
                 {
                     var error = await response.Content.ReadAsStringAsync();
-                    _logger.LogError($"Erro ao enviar requisição HTTP: {response.StatusCode} - {error}");
+                    _logger.LogError($"Error sending the HTTP request: {response.StatusCode} - {error}");
                     return new ApiResponse<bool>
                     {
-                        ErrorMessage = ($"Erro ao enviar requisição HTTP: {response.StatusCode} - {error}")
+                        ErrorMessage = ($"Error sending the HTTP request: {response.StatusCode} - {error}")
                     };
                 }
 
@@ -56,7 +57,7 @@ namespace AppLanches.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Erro ao registar o user: {ex.Message}");
+                _logger.LogError($"Error while register the user: {ex.Message}");
                 return new ApiResponse<bool> { ErrorMessage = ex.Message };
             }
         }
@@ -79,10 +80,10 @@ namespace AppLanches.Services
                 if (!response.IsSuccessStatusCode)
                 {
                     var error = await response.Content.ReadAsStringAsync();
-                    _logger.LogError($"Erro ao enviar requisição HTTP: {response.StatusCode} - {error}");
+                    _logger.LogError($"Error sending the HTTP request: {response.StatusCode} - {error}");
                     return new ApiResponse<bool>
                     {
-                        ErrorMessage = ($"Erro ao enviar requisição HTTP: {response.StatusCode} - {error}")
+                        ErrorMessage = ($"Error sending the HTTP request: {response.StatusCode} - {error}")
                     };
                 }
 
@@ -110,7 +111,7 @@ namespace AppLanches.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Erro ao registar o user: {ex.Message}");
+                _logger.LogError($"Erro while register the user: {ex.Message}");
                 return new ApiResponse<bool> { ErrorMessage = ex.Message };
             }
         }
@@ -125,7 +126,7 @@ namespace AppLanches.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Erro ao enviar requisição POST para {uri}: {ex.Message}");
+                _logger.LogError($"Error sending request: POST to {uri}: {ex.Message}");
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
         }
@@ -138,5 +139,60 @@ namespace AppLanches.Services
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
         }
+
+        public async Task<(List<Categoria>? Categorias, string? ErrorMessage)> GetCategorias()
+        {
+            return await GetAsync<List<Categoria>>("api/categorias");
+        }
+
+        public async Task<(List<Produto>? Produtos, string? ErrorMessage)> GetProdutos(string tipoProduto, string categoriaId)
+        {
+            string endpoint = $"api/Produtos?tipoProduto={tipoProduto}&categoriaId={categoriaId}"; //Under Product? get tipoProduto & categoriaId
+            return await GetAsync<List<Produto>>(endpoint);
+        }
+
+        private async Task<(T? Data, string? ErrorMessage)> GetAsync<T>(string endpoint)
+        {
+            try
+            {
+                AddAuthorizationHeader();
+                var response = await _httpClient.GetAsync(AppConfig.BaseUrl + endpoint);
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonResult = await response.Content.ReadAsStringAsync();
+                    var result = JsonSerializer.Deserialize<T>(jsonResult, _serializerOptions);
+                    return (result ?? Activator.CreateInstance<T>(), null);
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        string errorMessage = "Unauthorized";
+                        _logger.LogWarning(errorMessage);
+                        return (default, "Unauthorized");
+                    }
+                    string generalErrorMessage = $"Error sending the HTTP request: {response.ReasonPhrase}";
+                    _logger.LogError(generalErrorMessage);
+                    return (default, generalErrorMessage);
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError($"Error sending the HTTP request: {ex.Message}");
+                return (default, ex.Message);
+            }
+            catch (JsonException ex)
+            {
+                _logger.LogError($"Error deserializing the response: {ex.Message}");
+                return (default, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error: {ex.Message}");
+                return (default, ex.Message);
+            }
+        }
+
     }
+    
 }
