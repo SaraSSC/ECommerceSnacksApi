@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+	x:Class="AppLanches.Pages.ListaProdutosPage"
+	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	Title="ListaProdutosPage">
+	<CollectionView
+		x:Name="CvProdutos"
+		Margin="10"
+		SelectionMode="Single">
+
+		<CollectionView.ItemsLayout>
+			<GridItemsLayout
+				HorizontalItemSpacing="10"
+				Orientation="Vertical"
+				Span="2"
+				VerticalItemSpacing="10" />
+		</CollectionView.ItemsLayout>
+
+		<CollectionView.ItemTemplate>
+			<DataTemplate>
+				<Border
+					Padding="10"
+					StrokeShape="RoundRectangle 15,15,15,15"
+					VerticalOptions="Start">
+					<Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="5">
+						<Border StrokeShape="RoundRectangle 10,10,10,10" VerticalOptions="Start" />
+						<Image
+							Aspect="AspectFit"
+							HeightRequest="150"
+							Source="{Binding ImagePath}" />
+						<Border StrokeShape="RoundRectangle 10,10,10,10" VerticalOptions="Start" />
+						<Label
+							Grid.Row="1"
+							FontAttributes="Bold"
+							FontSize="Medium"
+							HorizontalOptions="Center"
+							LineBreakMode="WordWrap"
+							MaxLines="2"
+							Text="{Binding Nome}" />
+						<Label
+							Grid.Row="2"
+							FontAttributes="Bold"
+							FontSize="Medium"
+							Text="{Binding Preco, StringFormat='$ {0:F2}'}" />
+					</Grid>
+				</Border>
+			</DataTemplate>
+		</CollectionView.ItemTemplate>
+	</CollectionView>
+</ContentPage>

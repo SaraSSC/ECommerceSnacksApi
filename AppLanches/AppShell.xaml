@@ -5,10 +5,16 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:local="clr-namespace:AppLanches"
 	xmlns:pages="clr-namespace:AppLanches.Pages"
+	Shell.BackgroundColor="#2196F3"
+	Shell.DisabledColor="#8F8f8f"
 	Shell.FlyoutBehavior="Disabled"
-	Shell.TabBarBackgroundColor="#a90409"
-	Shell.TabBarTitleColor="White"
-	Shell.TabBarUnselectedColor="FloralWhite">
+	Shell.ForegroundColor="White"
+	Shell.NavBarHasShadow="True"
+	Shell.TabBarBackgroundColor="#2196F3"
+	Shell.TabBarTitleColor="AntiqueWhite"
+	Shell.TabBarUnselectedColor="White"
+	Shell.TitleColor="White"
+	Shell.UnselectedColor="White">
 
 	<!--<TabBar>
 		<Tab Title="Home" Icon="home">

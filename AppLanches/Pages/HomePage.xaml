@@ -29,7 +29,8 @@
 		<CollectionView
 			x:Name="CvCategorias"
 			Grid.Row="2"
-			SelectionMode="Single">
+			SelectionMode="Single"
+			SelectionChanged="CvCategorias_SelectionChanged">
 
 			<CollectionView.ItemsLayout>
 				<LinearItemsLayout ItemSpacing="20" Orientation="Horizontal" />

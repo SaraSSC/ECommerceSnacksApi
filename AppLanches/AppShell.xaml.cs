@@ -39,19 +39,19 @@ namespace AppLanches
                     {
                         Content = carrinhoPage,
                         Title = "Carrinho",
-                        Icon = "carrinho.png"
+                        Icon = "cart.png"
                     },
                     new ShellContent
                     {
                         Content = favoritosPage,
                         Title = "Favoritos",
-                        Icon = "favoritos.png"
+                        Icon = "heart.png"
                     },
                     new ShellContent
                     {
                         Content = perfilPage,
                         Title = "Perfil",
-                        Icon = "perfil.png"
+                        Icon = "settings.png"
                     }
                 }
             });

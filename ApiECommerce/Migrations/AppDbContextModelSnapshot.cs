@@ -42,7 +42,7 @@ namespace ApiECommerce.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categorias");
+                    b.ToTable("Categorias", (string)null);
 
                     b.HasData(
                         new
@@ -112,7 +112,7 @@ namespace ApiECommerce.Migrations
 
                     b.HasIndex("ProdutoId");
 
-                    b.ToTable("DetalhesPedido");
+                    b.ToTable("DetalhesPedido", (string)null);
                 });
 
             modelBuilder.Entity("ApiECommerce.Entities.ItemCarrinhoCompra", b =>
@@ -142,7 +142,7 @@ namespace ApiECommerce.Migrations
 
                     b.HasIndex("ProdutoId");
 
-                    b.ToTable("ItensCarrinhoCompra");
+                    b.ToTable("ItensCarrinhoCompra", (string)null);
                 });
 
             modelBuilder.Entity("ApiECommerce.Entities.Pedido", b =>
@@ -170,7 +170,7 @@ namespace ApiECommerce.Migrations
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("Pedidos");
+                    b.ToTable("Pedidos", (string)null);
                 });
 
             modelBuilder.Entity("ApiECommerce.Entities.Produto", b =>
@@ -218,7 +218,7 @@ namespace ApiECommerce.Migrations
 
                     b.HasIndex("CategoriaId");
 
-                    b.ToTable("Produtos");
+                    b.ToTable("Produtos", (string)null);
 
                     b.HasData(
                         new
@@ -502,7 +502,7 @@ namespace ApiECommerce.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Usuarios");
+                    b.ToTable("Usuarios", (string)null);
                 });
 
             modelBuilder.Entity("ApiECommerce.Entities.DetalhePedido", b =>
