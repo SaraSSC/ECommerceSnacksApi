@@ -7,8 +7,8 @@
 	<CollectionView
 		x:Name="CvProdutos"
 		Margin="10"
-		SelectionMode="Single"
-		SelectionChanged="CvProdutos_SelectionChanged">
+		SelectionChanged="CvProdutos_SelectionChanged"
+		SelectionMode="Single">
 
 		<CollectionView.ItemsLayout>
 			<GridItemsLayout

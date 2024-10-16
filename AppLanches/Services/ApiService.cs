@@ -198,6 +198,33 @@ namespace AppLanches.Services
             string endpoint = $"api/produtos/{produtoId}";
             return await GetAsync<Produto>(endpoint);
         }
+
+        public async Task<ApiResponse<bool>> AdicionarItemNoCarrinho(CarrinhoCompra carrinhoCompra)
+        {
+            try
+            {
+                var json = JsonSerializer.Serialize(carrinhoCompra, _serializerOptions);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await PostRequest("api/ItensCarrinhoCompra", content);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+                    _logger.LogError($"Error sending the HTTP request: {response.StatusCode} - {error}");
+                    return new ApiResponse<bool>
+                    {
+                        ErrorMessage = ($"Error sending the HTTP request: {response.StatusCode} - {error}")
+                    };
+                }
+
+                return new ApiResponse<bool> { Data = true };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while adding item to cart : {ex.Message}");
+                return new ApiResponse<bool> { ErrorMessage = ex.Message };
+            }
+        }
     }
-    
 }

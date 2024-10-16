@@ -70,16 +70,66 @@ public partial class DetalheProdutoPage : ContentPage
 
     private void BtnRemove_Clicked(object sender, EventArgs e)
     {
+        if (int.TryParse(LblQuantidade.Text, out int quantidade) &&
+            decimal.TryParse(LblProdutoPreco.Text, out decimal precoUnitario))
+        {
+            quantidade = Math.Max(1, quantidade - 1);
+            LblQuantidade.Text = quantidade.ToString();
 
+            var precoTotal = quantidade * precoUnitario;
+            LblPrecoTotal.Text = precoTotal.ToString();
+        }
+        else
+        {
+            DisplayAlert("Error", "It was not possible to calculate the total price.", "OK");
+        }
     }
 
     private void BtnAdiciona_Clicked(object sender, EventArgs e)
     {
+        if (int.TryParse(LblQuantidade.Text, out int quantidade) &&
+            decimal.TryParse(LblProdutoPreco.Text, out decimal precoUnitario))
+        {
+            quantidade++;
+            LblQuantidade.Text = quantidade.ToString();
 
+            var precoTotal = quantidade * precoUnitario;
+            LblPrecoTotal.Text = precoTotal.ToString();
+        }
+        else
+        {
+            DisplayAlert("Error", "It was not possible to calculate the total price.", "OK");
+        }
     }
 
-    private void BtnIncluirNoCarrinho_Clicked(object sender, EventArgs e)
+    private async void BtnIncluirNoCarrinho_Clicked(object sender, EventArgs e)
     {
+        try
+        {
+            var carrinhoCompra = new CarrinhoCompra()
+            {
+                ProdutoId = _produtoId,
+                Quantidade = int.Parse(LblQuantidade.Text),
+                Preco = decimal.Parse(LblProdutoPreco.Text),
+                ValorTotal = decimal.Parse(LblPrecoTotal.Text),
+                ClienteId = Preferences.Get("usuarioid", 0)
+            };
 
+            var response = await _apiService.AdicionarItemNoCarrinho(carrinhoCompra);
+
+            if (response.Data)
+            {
+                await DisplayAlert("Success", "Product added to cart.", "OK");
+                await Navigation.PopAsync();
+            }
+            else
+            {
+                await DisplayAlert("Error", response.ErrorMessage ?? "It was not possible to add the product to the cart.", "OK");
+            }
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Error", $"Something went wrong: {ex.Message}", "OK");
+        }
     }
 }
