@@ -193,6 +193,11 @@ namespace AppLanches.Services
             }
         }
 
+        internal async Task<(Produto? produtoDetalhe, string errorMessage)> GetDetalheProduto(int produtoId)
+        {
+            string endpoint = $"api/produtos/{produtoId}";
+            return await GetAsync<Produto>(endpoint);
+        }
     }
     
 }
