@@ -110,7 +110,7 @@ public partial class DetalheProdutoPage : ContentPage
             {
                 ProdutoId = _produtoId,
                 Quantidade = int.Parse(LblQuantidade.Text),
-                Preco = decimal.Parse(LblProdutoPreco.Text),
+                PrecoUnitario = decimal.Parse(LblProdutoPreco.Text),
                 ValorTotal = decimal.Parse(LblPrecoTotal.Text),
                 ClienteId = Preferences.Get("usuarioid", 0)
             };

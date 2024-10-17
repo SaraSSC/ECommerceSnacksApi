@@ -142,7 +142,7 @@ namespace AppLanches.Services
 
         public async Task<(List<Categoria>? Categorias, string? ErrorMessage)> GetCategorias()
         {
-            return await GetAsync<List<Categoria>>("api/categorias");
+            return await GetAsync<List<Categoria>>("api/Categorias");
         }
 
         public async Task<(List<Produto>? Produtos, string? ErrorMessage)> GetProdutos(string tipoProduto, string categoriaId)
@@ -195,7 +195,7 @@ namespace AppLanches.Services
 
         internal async Task<(Produto? produtoDetalhe, string errorMessage)> GetDetalheProduto(int produtoId)
         {
-            string endpoint = $"api/produtos/{produtoId}";
+            string endpoint = $"api/Produtos/{produtoId}";
             return await GetAsync<Produto>(endpoint);
         }
 
@@ -225,6 +225,12 @@ namespace AppLanches.Services
                 _logger.LogError($"Error while adding item to cart : {ex.Message}");
                 return new ApiResponse<bool> { ErrorMessage = ex.Message };
             }
+        }
+
+        public async Task<(List<CarrinhoCompraItem>? CarrinhoCompraItems, string? ErrorMessage)> GetItensCarrinhoCompra(int usuarioId)
+        {
+            var endpoint = $"api/ItensCarrinhoCompra/{usuarioId}";
+            return await GetAsync<List<CarrinhoCompraItem>>(endpoint);
         }
     }
 }
