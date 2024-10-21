@@ -13,6 +13,7 @@ public partial class CarrinhoPage : ContentPage
     private ObservableCollection<CarrinhoCompraItem> ItensCarrinhoCompra = new ObservableCollection<CarrinhoCompraItem>();
     private bool _loginPageDisplayed = false;
     private bool _isNavigatingEmptyCartPage = false;
+    private bool _isNavigationToEmptyCartPage = false;
     public CarrinhoPage(ApiService apiService, IValidator validator)
 	{
 		InitializeComponent();
@@ -23,8 +24,27 @@ public partial class CarrinhoPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await GetItensCarrinhoCompra();
+        //await GetItensCarrinhoCompra();
 
+        
+
+        if (IsNavigationToEmptyCartPage()) return;
+
+        bool hasItems = await GetItensCarrinhoCompra();
+
+        if (hasItems)
+        {
+            ExibirEndereco();
+        }
+        else
+        {
+            await NavegarParaCarrinhoVazio();
+        }
+    }
+
+
+    private void ExibirEndereco()
+    {
         bool enderecoSalvo = Preferences.ContainsKey("endereco");
 
         if (enderecoSalvo)
@@ -41,7 +61,24 @@ public partial class CarrinhoPage : ContentPage
         }
     }
 
-    private async Task<IEnumerable<CarrinhoCompraItem>> GetItensCarrinhoCompra()
+    private async Task NavegarParaCarrinhoVazio()
+    {
+        LblEndereco.Text = string.Empty;
+        _isNavigatingEmptyCartPage = true;
+        await Navigation.PushAsync(new CarrinhoVazioPage(_apiService, _validator));
+    }
+
+    private bool IsNavigationToEmptyCartPage()
+    {
+        if (_isNavigatingEmptyCartPage)
+        {
+            _isNavigatingEmptyCartPage = false;
+            return true;
+        }
+        return false;
+    }
+
+    private async Task<bool> GetItensCarrinhoCompra()
 	{
 		try
 		{
@@ -51,13 +88,13 @@ public partial class CarrinhoPage : ContentPage
 			if (errorMessage == "Unauthorized" && !_loginPageDisplayed)
 			{
 				await DisplayLoginPage();
-				return Enumerable.Empty<CarrinhoCompraItem>();
-			}
+				return false;
+            }
 
 			if (itensCarrinhoCompra is null)
 			{
 				await DisplayAlert("Error", errorMessage ?? "It was not possible to obtain the shopping cart items.", "OK");
-				return Enumerable.Empty<CarrinhoCompraItem>();
+                return false;
 			}
 
 			ItensCarrinhoCompra.Clear();
@@ -68,13 +105,18 @@ public partial class CarrinhoPage : ContentPage
 
 			CvCarrinho.ItemsSource = ItensCarrinhoCompra;
 			AtualizaPrecoTotal();
-			return itensCarrinhoCompra;
+			
+            if (!ItensCarrinhoCompra.Any())
+            {
+                return false;
+            }
+            return true;
 		}
 		catch (Exception ex)
 		{
 
 			await DisplayAlert("Erro", $"An error was occured: {ex.Message}", "OK");
-            return Enumerable.Empty<CarrinhoCompraItem>();
+            return false;
         }
     }
 
@@ -148,8 +190,45 @@ public partial class CarrinhoPage : ContentPage
         }
     }
 
-    private void TapConfirmarPedido_Tapped(object sender, TappedEventArgs e)
+    private async void TapConfirmarPedido_Tapped(object sender, TappedEventArgs e)
     {
+        if (ItensCarrinhoCompra is null || !ItensCarrinhoCompra.Any())
+        {
+            await DisplayAlert("Information", "There are no items in the cart or your order is already confirmed.", "OK");
+            return;
+        }
+
+        var pedido = new Pedido
+        {
+            Endereco = LblEndereco.Text,
+            UsuarioId = Preferences.Get("usuarioid", 0),
+            ValorTotal = Convert.ToDecimal(LblPrecoTotal.Text),
+        };
+
+        var response = await _apiService.ConfirmarPedido(pedido);
+
+        if (response.HasError)
+        {
+            if (response.ErrorMessage is "Unauthorized" && !_loginPageDisplayed)
+            {
+                //Redirect to login page
+                await DisplayLoginPage();
+                return;
+
+
+            }
+            await DisplayAlert("Information", $"Something went wrong: {response.ErrorMessage}", "Cancel");
+            return;
+        }
+
+        ItensCarrinhoCompra.Clear();
+        LblEndereco.Text = "Add your address";
+        LblPrecoTotal.Text = "0.00";
+
+
+        await Navigation.PushAsync(new PedidoConfirmadoPage());
 
     }
+
+
 }

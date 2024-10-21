@@ -144,7 +144,7 @@
 					Clicked="BtnEditaEndereco_Clicked"
 					HeightRequest="25"
 					HorizontalOptions="End"
-					Source="edit"
+					Source="pencil.png"
 					VerticalOptions="Start"
 					WidthRequest="25" />
 

@@ -61,11 +61,13 @@
 	  <None Remove="Resources\Images\cart.png" />
 	  <None Remove="Resources\Images\customer.png" />
 	  <None Remove="Resources\Images\delete.png" />
+	  <None Remove="Resources\Images\empty_cart.gif" />
 	  <None Remove="Resources\Images\hamburger.png" />
 	  <None Remove="Resources\Images\heart.png" />
 	  <None Remove="Resources\Images\home.png" />
 	  <None Remove="Resources\Images\left.png" />
 	  <None Remove="Resources\Images\order.png" />
+	  <None Remove="Resources\Images\Order_Confirmed.gif" />
 	  <None Remove="Resources\Images\pencil.png" />
 	  <None Remove="Resources\Images\right.png" />
 	  <None Remove="Resources\Images\settings.png" />
@@ -93,6 +95,9 @@
 	  <MauiXaml Update="Pages\CarrinhoPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\CarrinhoVazioPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\DetalheProdutoPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -112,6 +117,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\LoginPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\PedidoConfirmadoPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\PerfilPage.xaml">

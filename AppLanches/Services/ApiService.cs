@@ -292,5 +292,34 @@ namespace AppLanches.Services
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
         }
+
+
+        public async Task<ApiResponse<bool>> ConfirmarPedido(Pedido pedido)
+        {
+            try
+            {
+                var json = JsonSerializer.Serialize(pedido, _serializerOptions);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await PostRequest("api/Pedidos", content);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    string errorMessage = response.StatusCode == HttpStatusCode.Unauthorized 
+                        ? "Unauthorized" : $"Error sending HTTP request: {response.ReasonPhrase}- {response.StatusCode}";
+
+                    _logger.LogError($"Error sending HTTP request : {response.StatusCode}");
+                    return new ApiResponse<bool> { ErrorMessage = errorMessage };
+
+                }
+
+                return new ApiResponse<bool> { Data = true };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while confirming the order: {ex.Message}");
+                return new ApiResponse<bool> { ErrorMessage = ex.Message };
+            }
+        }
     }
 }
