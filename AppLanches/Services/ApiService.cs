@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AppLanches.Models;
 
 
+
 namespace AppLanches.Services
 {
     public class ApiService
@@ -231,6 +232,65 @@ namespace AppLanches.Services
         {
             var endpoint = $"api/ItensCarrinhoCompra/{usuarioId}";
             return await GetAsync<List<CarrinhoCompraItem>>(endpoint);
+        }
+
+        public async Task<(bool Data, string? ErrorMessage)> AtualizaQuantidadeItemCarrinho(int produtoId, string v)
+        {
+            try
+            {
+                var content = new StringContent(string.Empty, Encoding.UTF8, "application/json");
+                var response = await PutRequest($"api/ItensCarrinhoCompra?produtoId={produtoId}&acao={v}", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return (true, null);
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        string errorMessage = "Unauthorized";
+                        _logger.LogWarning(errorMessage);
+                        return (false, errorMessage);
+                    }
+                    string generalErrorMessage = $"Error sending the HTTP request: {response.ReasonPhrase}";
+                    _logger.LogError(generalErrorMessage);
+                    return (false, generalErrorMessage);
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError($"Error sending the HTTP request: {ex.Message}");
+                return (false, ex.Message);
+            }
+            catch (JsonException ex)
+            {
+                _logger.LogError($"Error deserializing the response: {ex.Message}");
+                return (false, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error: {ex.Message}");
+                return (false, ex.Message);
+            }
+        }
+
+
+        private async Task<HttpResponseMessage> PutRequest(string uri, HttpContent content)
+        {
+            var UrlAddress = AppConfig.BaseUrl + uri;
+            try
+            {
+                AddAuthorizationHeader();
+                var result = await _httpClient.PutAsync(UrlAddress, content);
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error sending request: PUT to {uri}: {ex.Message}");
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
         }
     }
 }

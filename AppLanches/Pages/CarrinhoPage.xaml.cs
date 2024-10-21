@@ -24,6 +24,21 @@ public partial class CarrinhoPage : ContentPage
     {
         base.OnAppearing();
         await GetItensCarrinhoCompra();
+
+        bool enderecoSalvo = Preferences.ContainsKey("endereco");
+
+        if (enderecoSalvo)
+        {
+            string nome = Preferences.Get("nome", string.Empty);
+            string endereco = Preferences.Get("endereco", string.Empty);
+            string telefone = Preferences.Get("telefone", string.Empty);
+
+            LblEndereco.Text = $"{nome}\n{endereco}\n{telefone}";
+        }
+        else
+        {
+            LblEndereco.Text = "Add your address";
+        }
     }
 
     private async Task<IEnumerable<CarrinhoCompraItem>> GetItensCarrinhoCompra()
@@ -87,22 +102,50 @@ public partial class CarrinhoPage : ContentPage
 
     private void BtnEditaEndereco_Clicked(object sender, EventArgs e)
     {
-
+        Navigation.PushAsync(new EnderecoPage());
     }
 
-    private void BtnDeletar_Clicked(object sender, EventArgs e)
+    private async void BtnDeletar_Clicked(object sender, EventArgs e)
     {
+        if (sender is ImageButton button && button.BindingContext is CarrinhoCompraItem itemCarrinho)
+        {
+            bool resposta = await DisplayAlert("Delete item", "Do you want to delete this item from the cart?", "Yes", "No");
 
+            if (resposta) 
+            {
+                ItensCarrinhoCompra.Remove(itemCarrinho);
+                AtualizaPrecoTotal();
+                await _apiService.AtualizaQuantidadeItemCarrinho(itemCarrinho.ProdutoId, "delete");//deletar
+            }
+        }
     }
 
-    private void BtnIncrementar_Clicked(object sender, EventArgs e)
+    private async void BtnIncrementar_Clicked(object sender, EventArgs e)
     {
-
+        if (sender is Button button && button.BindingContext is CarrinhoCompraItem itemCarrinho)
+        {
+            itemCarrinho.Quantidade++;
+            AtualizaPrecoTotal();
+            await _apiService.AtualizaQuantidadeItemCarrinho(itemCarrinho.ProdutoId, "increase"); //aumentar
+        }
     }
 
-    private void BtnDecrementar_Clicked(object sender, EventArgs e)
+    private async void BtnDecrementar_Clicked(object sender, EventArgs e)
     {
-
+        if (sender is Button button && button.BindingContext is CarrinhoCompraItem itemCarrinho)
+        {
+            if (itemCarrinho.Quantidade is 1)
+            {
+                return;
+            }
+            else
+            {
+                itemCarrinho.Quantidade--;
+                AtualizaPrecoTotal();
+                await _apiService.AtualizaQuantidadeItemCarrinho(itemCarrinho.ProdutoId, "decrease"); //diminuir
+            }
+           
+        }
     }
 
     private void TapConfirmarPedido_Tapped(object sender, TappedEventArgs e)
