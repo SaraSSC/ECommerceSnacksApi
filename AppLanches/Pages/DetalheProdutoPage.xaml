@@ -22,7 +22,7 @@
 			CornerRadius="15"
 			HeightRequest="40"
 			HorizontalOptions="End"
-			Source="heart"
+			Source="heart.png"
 			VerticalOptions="Start"
 			WidthRequest="40" />
 

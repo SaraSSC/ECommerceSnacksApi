@@ -3,11 +3,57 @@
 	x:Class="AppLanches.Pages.FavoritosPage"
 	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-	Title="FavoritosPage">
+	Title="Favorites Page">
+
 	<VerticalStackLayout>
 		<Label
+			x:Name="LblAviso"
+			FontAttributes="Bold"
+			FontSize="Large"
 			HorizontalOptions="Center"
-			Text="favoritos"
+			IsVisible="False"
+			Text="No selected favorite item"
 			VerticalOptions="Center" />
+
+		<CollectionView
+			x:Name="CvProdutos"
+			Margin="10"
+			SelectionChanged="CvProdutos_SelectionChanged"
+			SelectionMode="Single">
+
+			<CollectionView.ItemsLayout>
+				<GridItemsLayout
+					HorizontalItemSpacing="15"
+					Orientation="Vertical"
+					Span="2"
+					VerticalItemSpacing="15" />
+			</CollectionView.ItemsLayout>
+
+			<CollectionView.ItemTemplate>
+				<DataTemplate>
+					<Border
+						Padding="10"
+						StrokeShape="RoundRectangle 10, 10, 10, 10"
+						VerticalOptions="Start">
+
+						<Grid RowSpacing="5" RowDefinitions="Auto, Auto, Auto">
+							<Image
+								Grid.Row="0"
+								HeightRequest="80"
+								Source="{Binding ImagemUrl}"
+								WidthRequest="80" />
+							<Label
+								Grid.Row="1"
+								FontAttributes="Bold"
+								FontSize="Subtitle"
+								Text="{Binding Nome}"
+								VerticalOptions="Center" />
+							<Label Grid.Row="2" FontAttributes="Bold" Text="{Binding Preco, StringFormat='${0:F2}'}"></Label>
+						</Grid>
+					</Border>
+				</DataTemplate>
+			</CollectionView.ItemTemplate>
+		</CollectionView>
+
 	</VerticalStackLayout>
 </ContentPage>

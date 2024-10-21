@@ -214,7 +214,7 @@
 
 					<Image
 						HeightRequest="25"
-						Source="rightarrow"
+						Source="right.png"
 						VerticalOptions="Center"
 						WidthRequest="25" />
 

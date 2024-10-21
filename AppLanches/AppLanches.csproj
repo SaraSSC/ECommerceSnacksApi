@@ -64,6 +64,7 @@
 	  <None Remove="Resources\Images\empty_cart.gif" />
 	  <None Remove="Resources\Images\hamburger.png" />
 	  <None Remove="Resources\Images\heart.png" />
+	  <None Remove="Resources\Images\heart_fill.png" />
 	  <None Remove="Resources\Images\home.png" />
 	  <None Remove="Resources\Images\left.png" />
 	  <None Remove="Resources\Images\order.png" />
@@ -80,9 +81,11 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.91" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.91" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.92" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.92" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
+		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
+		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.10" />
 	</ItemGroup>
 
 	<ItemGroup>

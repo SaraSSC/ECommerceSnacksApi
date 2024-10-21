@@ -27,6 +27,7 @@ namespace AppLanches
             builder.Services.AddHttpClient();
             builder.Services.AddSingleton<ApiService>();
             builder.Services.AddSingleton<IValidator, Validator>();
+            //builder.Services.AddSingleton<FavoritosService>();
             return builder.Build();
         }
     }
