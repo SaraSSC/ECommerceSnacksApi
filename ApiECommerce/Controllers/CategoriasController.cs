@@ -19,6 +19,8 @@ namespace ApiECommerce.Controllers
         {
             var categorias = await categoriaRepository.GetCategorias();
             return Ok(categorias);
+
+            
         }
     }
 }

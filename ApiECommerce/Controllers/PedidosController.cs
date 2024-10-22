@@ -24,25 +24,46 @@ namespace ApiECommerce.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DetalhesPedido(int pedidoId)
         {
-            var pedidoDetalhes = await (from detalhePedido in dbContext.DetalhesPedido
-                                        join pedido in dbContext.Pedidos on detalhePedido.PedidoId equals pedido.Id
-                                        join produto in dbContext.Produtos on detalhePedido.ProdutoId equals produto.Id
-                                        where detalhePedido.PedidoId == pedidoId
-                                        select new
-                                        {
-                                            Id = detalhePedido.Id,
-                                            Quantidade = detalhePedido.Quantidade,
-                                            SubTotal = detalhePedido.ValorTotal,
-                                            ProdutoNome = produto.Nome,
-                                            ProdutoImagem = produto.UrlImagem,
-                                            ProdutoPreco = produto.Preco
-                                        }).ToListAsync();
+            //var pedidoDetalhes = await (from detalhePedido in dbContext.DetalhesPedido
+            //                            join pedido in dbContext.Pedidos on detalhePedido.PedidoId equals pedido.Id
+            //                            join produto in dbContext.Produtos on detalhePedido.ProdutoId equals produto.Id
+            //                            where detalhePedido.PedidoId == pedidoId
+            //                            select new
+            //                            {
+            //                                Id = detalhePedido.Id,
+            //                                Quantidade = detalhePedido.Quantidade,
+            //                                SubTotal = detalhePedido.ValorTotal,
+            //                                ProdutoNome = produto.Nome,
+            //                                ProdutoImagem = produto.UrlImagem,
+            //                                ProdutoPreco = produto.Preco
+            //                            }).ToListAsync();
 
-            if (pedidoDetalhes == null || pedidoDetalhes.Count == 0)
+            //if (pedidoDetalhes == null || pedidoDetalhes.Count == 0)
+            //{
+            //    return NotFound("Detalhes do pedido não encontrados.");
+            //}
+
+            //return Ok(pedidoDetalhes);
+
+            var pedidoDetalhes = await dbContext.DetalhesPedido
+                .AsNoTracking()
+                .Where(detalhe => detalhe.PedidoId == pedidoId)
+                //.Include(detalhe => detalhe.Produto)
+                .Select(detalhe => new
+                {
+                    Id = detalhe.Id,
+                    Quantidade = detalhe.Quantidade,
+                    SubTotal = detalhe.ValorTotal,
+                    ProdutoNome = detalhe.Produto.Nome,
+                    ProdutoImagem = detalhe.Produto.UrlImagem,
+                    ProdutoPreco = detalhe.Produto.Preco
+                })
+                .ToListAsync();
+
+            if (!pedidoDetalhes.Any())
             {
-                return NotFound("Detalhes do pedido não encontrados.");
+                return NotFound("Order details not found.");
             }
-
             return Ok(pedidoDetalhes);
         }
 
@@ -54,20 +75,39 @@ namespace ApiECommerce.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> PedidosPorUsuario(int usuarioId)
         {
-            var pedidos = await (from pedido in dbContext.Pedidos
-                                 where pedido.UsuarioId == usuarioId
-                                 orderby pedido.DataPedido descending
-                                 select new
-                                 {
-                                     Id = pedido.Id,
-                                     PedidoTotal = pedido.ValorTotal,
-                                     DataPedido = pedido.DataPedido,
-                                 }).ToListAsync();
+            //var pedidos = await (from pedido in dbContext.Pedidos
+            //                     where pedido.UsuarioId == usuarioId
+            //                     orderby pedido.DataPedido descending
+            //                     select new
+            //                     {
+            //                         Id = pedido.Id,
+            //                         PedidoTotal = pedido.ValorTotal,
+            //                         DataPedido = pedido.DataPedido,
+            //                     }).ToListAsync();
 
 
-            if (pedidos is null || pedidos.Count == 0)
+            //if (pedidos is null || pedidos.Count == 0)
+            //{
+            //    return NotFound("Não foram encontrados pedidos para o usuário especificado.");
+            //}
+
+            //return Ok(pedidos);
+
+            var pedidos = await dbContext.Pedidos
+                .AsNoTracking()
+                .Where(pedido => pedido.UsuarioId == usuarioId)
+                .OrderByDescending(pedido => pedido.DataPedido)
+                .Select(pedido => new
+                {
+                    Id = pedido.Id,
+                    PedidoTotal = pedido.ValorTotal,
+                    DataPedido = pedido.DataPedido,
+                })
+                .ToListAsync();
+
+            if (!pedidos.Any())
             {
-                return NotFound("Não foram encontrados pedidos para o usuário especificado.");
+                return NotFound("No orders found for the specified user.");
             }
 
             return Ok(pedidos);

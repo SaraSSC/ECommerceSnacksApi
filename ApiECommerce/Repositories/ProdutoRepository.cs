@@ -23,6 +23,7 @@ namespace ApiECommerce.Repositories
         public async Task<IEnumerable<Produto>> ObterProdutosPopularesAsync()
         {
             return await _dbContext.Produtos
+                .AsNoTracking()
                 .Where(p => p.Popular)
                 .ToListAsync();
         }
@@ -30,6 +31,7 @@ namespace ApiECommerce.Repositories
         public async Task<IEnumerable<Produto>> ObterProdutosMaisVendidosAsync()
         {
             return await _dbContext.Produtos
+                .AsNoTracking()
                 .Where(p => p.MaisVendido)
                 .ToListAsync();
         }

@@ -14,7 +14,7 @@ public partial class FavoritosPage : ContentPage
 		InitializeComponent();
         _apiService = apiService;
         _validator = validator;
-        _favoritosService = new FavoritosService();
+        _favoritosService = ServiceFactory.FSInstance();
     }
 
     protected override async void OnAppearing()

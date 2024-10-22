@@ -38,5 +38,8 @@ namespace AppLanches.Services
         {
             await _database.DeleteAsync(produtoFavorito);
         }
+
+       
     }
+    
 }
