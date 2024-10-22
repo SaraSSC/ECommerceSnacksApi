@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+	x:Class="AppLanches.Pages.PerguntasPage"
+	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+	Title="PerguntasPage">
+	<ScrollView>
+		<VerticalStackLayout Padding="10" Spacing="15">
+			<Label
+				FontAttributes="Bold"
+				FontSize="Medium"
+				HorizontalOptions="Center"
+				Text="Frequent Questions"
+				TextColor="DarkBlue" />
+
+			<toolkit:Expander>
+				<toolkit:Expander.Header>
+					<Label
+						FontAttributes="Bold"
+						FontSize="15"
+						Text="How can I place an order?" />
+				</toolkit:Expander.Header>
+				<toolkit:Expander.Content>
+					<Label
+						FontSize="12"
+						Text="To place an order, you need to navigate throught our lunch catalogue, select the wished itens, adding them to the cart and go to the checkout to  finish the placement(buy)"
+						TextColor="DarkBlue" />
+				</toolkit:Expander.Content>
+			</toolkit:Expander>
+
+			<toolkit:Expander>
+				<toolkit:Expander.Header>
+					<Label
+						FontAttributes="Bold"
+						FontSize="15"
+						Text="Which payment methodes do you accept?" />
+				</toolkit:Expander.Header>
+				<toolkit:Expander.Content>
+					<Label
+						FontSize="12"
+						Text="We accept credit and debit cards, Pix, and money when delivering."
+						TextColor="DarkBlue" />
+				</toolkit:Expander.Content>
+			</toolkit:Expander>
+
+			<toolkit:Expander>
+				<toolkit:Expander.Header>
+					<Label
+						FontAttributes="Bold"
+						FontSize="15"
+						Text="Can I follow my order?" />
+				</toolkit:Expander.Header>
+				<toolkit:Expander.Content>
+					<Label
+						FontSize="12"
+						Text="Yes, you can follow your order status in the secction 'My orders' on the application"
+						TextColor="DarkBlue" />
+				</toolkit:Expander.Content>
+			</toolkit:Expander>
+
+			<toolkit:Expander>
+				<toolkit:Expander.Header>
+					<Label
+						FontAttributes="Bold"
+						FontSize="15"
+						Text="How much time does it take to my order to be delivered?" />
+				</toolkit:Expander.Header>
+				<toolkit:Expander.Content>
+					<Label
+						FontSize="12"
+						Text=" The delivery time can variate depending on your location and number of requests pending. Normally your orders are deliverd in 45 minutes at most."
+						TextColor="DarkBlue" />
+				</toolkit:Expander.Content>
+			</toolkit:Expander>
+
+			<toolkit:Expander>
+				<toolkit:Expander.Header>
+					<Label
+						FontAttributes="Bold"
+						FontSize="15"
+						Text="Can i cancel my order?" />
+				</toolkit:Expander.Header>
+				<toolkit:Expander.Content>
+					<Label
+						FontSize="12"
+						Text="Your can cancel or alter your order in with in 10 minutes afetr your place it. For that, please contact us using the support channels with in the application"
+						TextColor="DarkBlue" />
+				</toolkit:Expander.Content>
+			</toolkit:Expander>
+
+			<toolkit:Expander>
+				<toolkit:Expander.Header>
+					<Label
+						FontAttributes="Bold"
+						FontSize="15"
+						Text="What can I do if I receive the wrong order?" />
+				</toolkit:Expander.Header>
+				<toolkit:Expander.Content>
+					<Label
+						FontSize="12"
+						Text="If you receive the wrong order, please contact us using the available supposrt channels with in the application so we can remediate the problem as soon as possible"
+						TextColor="DarkBlue" />
+				</toolkit:Expander.Content>
+			</toolkit:Expander>
+
+			<toolkit:Expander>
+				<toolkit:Expander.Header>
+					<Label
+						FontAttributes="Bold"
+						FontSize="15"
+						Text="How can I contact support?" />
+				</toolkit:Expander.Header>
+				<toolkit:Expander.Content>
+					<Label
+						FontSize="12"
+						Text="By email, from monday to friday : 'contato@lanchesmac.com' or by phone: (14)9876-0011 from 8 am to 6 pm"
+						TextColor="DarkBlue" />
+				</toolkit:Expander.Content>
+			</toolkit:Expander>
+		</VerticalStackLayout>
+	</ScrollView>
+</ContentPage>

@@ -60,11 +60,12 @@ public partial class PerfilPage : ContentPage
 
     private void TapMinhaConta_Tapped(object sender, TappedEventArgs e)
     {
-
+        Navigation.PushAsync(new MinhaContaPage(_apiService));
     }
 
     private void TapPerguntas_Tapped(object sender, TappedEventArgs e)
     {
+        Navigation.PushAsync(new PerguntasPage());
 
     }
 
