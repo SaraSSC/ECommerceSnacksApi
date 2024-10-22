@@ -32,7 +32,7 @@ namespace ApiECommerce.Controllers
 
             if (usuarioExiste is not null)
             {
-                return BadRequest("Já existe usuário com este email");
+                return BadRequest("Already exists a user with that email");
             }
 
             dbContext.Usuarios.Add(usuario);
@@ -49,7 +49,7 @@ namespace ApiECommerce.Controllers
 
             if (usuarioAtual is null)
             {
-                return NotFound("Usuário não encontrado");
+                return NotFound("User not found");
             }
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:Key"]));
@@ -79,7 +79,7 @@ namespace ApiECommerce.Controllers
         }
 
         [Authorize]
-        [HttpPost("uploadfoto")]
+        [HttpPost("uploadfotousuario")]
         public async Task<IActionResult> UploadFotoUsuario(IFormFile imagem)
         {
             var usuarioemail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
@@ -87,7 +87,7 @@ namespace ApiECommerce.Controllers
 
             if (usuario is null)
             {
-                return NotFound("Usuário não encontrado");
+                return NotFound("User not found");
             }
 
             if (imagem is not null)
@@ -106,10 +106,10 @@ namespace ApiECommerce.Controllers
                 usuario.UrlImagem = "/userimages/" + uniqueFileName;
 
                 await dbContext.SaveChangesAsync();
-                return Ok("Imagem enviada com sucesso");
+                return Ok("Picture successfully sent");
             }
 
-            return BadRequest("Nenhuma imagem enviada");
+            return BadRequest("No picture sent");
         }
 
         [Authorize]
@@ -122,7 +122,7 @@ namespace ApiECommerce.Controllers
             var usuario = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.Email == userEmail);
 
             if (usuario is null)
-                return NotFound("Usuário não encontrado");
+                return NotFound("User not found");
 
             var imagemPerfil = await dbContext.Usuarios
                 .Where(x => x.Email == userEmail)

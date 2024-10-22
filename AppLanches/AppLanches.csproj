@@ -67,15 +67,18 @@
 	  <None Remove="Resources\Images\heart_fill.png" />
 	  <None Remove="Resources\Images\home.png" />
 	  <None Remove="Resources\Images\left.png" />
+	  <None Remove="Resources\Images\log_out.png" />
 	  <None Remove="Resources\Images\order.png" />
 	  <None Remove="Resources\Images\Order_Confirmed.gif" />
 	  <None Remove="Resources\Images\pencil.png" />
+	  <None Remove="Resources\Images\question.png" />
 	  <None Remove="Resources\Images\right.png" />
 	  <None Remove="Resources\Images\settings.png" />
 	  <None Remove="Resources\Images\street_food.png" />
 	  <None Remove="Resources\Images\sushi.png" />
 	  <None Remove="Resources\Images\takeaway.png" />
 	  <None Remove="Resources\Images\talk.png" />
+	  <None Remove="Resources\Images\user_st.png" />
 	  <None Remove="Resources\Splash\lunch.svg" />
 	</ItemGroup>
 
@@ -123,6 +126,12 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\PedidoConfirmadoPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\PedidoDetalhesPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\PedidoPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\PerfilPage.xaml">

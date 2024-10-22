@@ -4,5 +4,7 @@
     {
         public static string BaseUrl => "https://dzzqk7t1-5113.uks1.devtunnels.ms/";
         public static readonly string tituloHomePage = "Mac Lunch";
+
+        public static readonly string PerfilImagemPadrao = "Resources/Images/customer.png";
     }
 }

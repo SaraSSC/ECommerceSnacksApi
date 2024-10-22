@@ -305,7 +305,7 @@ namespace AppLanches.Services
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    string errorMessage = response.StatusCode == HttpStatusCode.Unauthorized 
+                    string errorMessage = response.StatusCode == HttpStatusCode.Unauthorized
                         ? "Unauthorized" : $"Error sending HTTP request: {response.ReasonPhrase}- {response.StatusCode}";
 
                     _logger.LogError($"Error sending HTTP request : {response.StatusCode}");
@@ -320,6 +320,53 @@ namespace AppLanches.Services
                 _logger.LogError($"Error while confirming the order: {ex.Message}");
                 return new ApiResponse<bool> { ErrorMessage = ex.Message };
             }
+        }
+
+        public async Task<(ImagemPerfil? ImagemPerfil, string? ErrorMessage)> GetImagemPerfilUsuario()
+        {
+            string endpoint = "api/usuario/ImagemPerfilUsuario";
+            return await GetAsync<ImagemPerfil>(endpoint);
+        }
+
+        public async Task<ApiResponse<bool>> UploadImagemUsuario(byte[] imagemArray)
+        {
+            try
+            {
+                var content = new MultipartFormDataContent();
+                content.Add(new ByteArrayContent(imagemArray), "image", "imagem.jpg");
+
+                var response = await PostRequest("api/usuario/uploadfotousuario", content);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    string errorMessage = response.StatusCode == HttpStatusCode.Unauthorized
+                        ? "Unauthorized" : $"Error sending HTTP request: {response.ReasonPhrase} - {response.StatusCode}";
+
+                    _logger.LogError($"Error sending HTTP request: {response.StatusCode}");
+                    return new ApiResponse<bool> { ErrorMessage = errorMessage };
+                }
+
+                return new ApiResponse<bool> { Data = true };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while uploading the picture: {ex.Message}");
+                return new ApiResponse<bool> { ErrorMessage = ex.Message };
+            }
+        }
+
+        public async Task<(List<PedidoPorUsuario>?, string? ErrorMessage)> GetPedidosPorUsuario(int usuarioId)
+        {
+            string endpoint = $"api/pedidos/PedidosPorUsuario/{usuarioId}";
+
+            return await GetAsync<List<PedidoPorUsuario>>(endpoint);
+        }
+        
+        public async Task<(List<PedidoDetalhe>?, string? ErrorMessage)> GetPedidoDetalhes(int pedidoId)
+        {
+            string endpoint = $"api/pedidos/DetalhesPedido/{pedidoId}";
+
+            return await GetAsync<List<PedidoDetalhe>>(endpoint);
         }
     }
 }
